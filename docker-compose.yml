@@ -1,0 +1,29 @@
+version: "3"
+services:
+  jenkins:
+    container_name: myjenkins
+#    image: jenkins/jenkins:latest      plan jenkins intallation
+#    below command for jenkins javing ansibel installed in it
+    image: jenkins_host
+    build:
+      context: jenkins-ansible
+    ports:
+      - "8081:8080"
+    volumes:
+      - jenkins-data:/var/jenkins_home/
+    networks:
+      - net
+
+  remote_host:
+    container_name: remote_host
+    image: remote-host
+    build:
+      context: remote-host-image
+    networks:
+      - net
+
+networks:
+  net:
+
+volumes:
+  jenkins-data:
