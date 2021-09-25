@@ -1,9 +1,21 @@
 # jenkins-learning
 # We have two servers/systems/containers primarily :  jenkins container (on which jenkins is running )  and remote-host container ( container on which will perform activity)
 
-1. Create the ssh key inside the folder location remote-host-iamge : ssh-keygen -f remote_key
-2. Come to the parent location(where docker-compose file is located) and Build the image :  docker-compose build
-3. [For setting up SSH Connection from jenkins to remote_host system]
+1. Madotory software installation in amazon linux:
+      sudo yum update -y && \
+      sudo yum -y install docker && \
+      sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose && \
+      sudo chmod +x /usr/local/bin/docker-compose
+      
+      sudo useradd dockeruser && \
+      sudo passwd dockeruser
+      
+      sudo useradd -aG docker dockeruser
+      sudo useradd -aG wheel dockeruser  [not a mandatoy step]
+
+2. Create the ssh key inside the folder location remote-host-iamge : ssh-keygen -f remote_key
+3. Come to the parent location(where docker-compose file is located) and Build the image :  docker-compose build
+4. [For setting up SSH Connection from jenkins to remote_host system]
    Copy the remote_key file to the location /var/lib/docker/volumes/jenkins-jenkins-data/_data/  
                                  or
    docker cp ./remote-host-image/remote_key myjenkins:/var/jenkins_home/
