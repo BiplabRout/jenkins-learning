@@ -16,17 +16,19 @@
 2. Create the ssh key inside the folder location remote-host-iamge : ssh-keygen -f remote_key
 3. Come to the parent location(where docker-compose file is located) and Build the image :  docker-compose build
 4. [For setting up SSH Connection from jenkins to remote_host system]
-   Copy the remote_key file to the location /var/lib/docker/volumes/jenkins-jenkins-data/_data/  
+   create a folder with name "ansible" in the location /var/lib/docker/volumes/jenkins-jenkins-data/_data/
+   Copy the remote_key file to the location /var/lib/docker/volumes/jenkins-jenkins-data/_data/ansible  
                                  or
-   docker cp ./remote-host-image/remote_key myjenkins:/var/jenkins_home/
+   docker cp ./remote-host-image/remote_key myjenkins:/var/jenkins_home/ansible
 
    Login to the jenkins container :  docker exec -u 0 -it myjenkins bash (using root)
    change owner permission : chown jenkins:jenkins /var/jenkins_home/remote_key
 
 4. [For setting up the ansible in the jenkins container] : Here using ansible we are trying to perform activity in the remote_host system
-   Copy the hosts file to the location /var/lib/docker/volumes/jenkins-jenkins-data/_data/
+   create a folder with name "ansible" in the location /var/lib/docker/volumes/jenkins-jenkins-data/_data/ (only if the folder is not avalaible )
+   Copy the hosts file to the location /var/lib/docker/volumes/jenkins-jenkins-data/_data/ansible
                                or
-   docker cp ./jenkins-ansible/hosts  myjenkins:/var/jenkins_home/        [myjenkins ---> jenkins container name set in docker compose file]
+   docker cp ./jenkins-ansible/hosts  myjenkins:/var/jenkins_home/ansible        [myjenkins ---> jenkins container name set in docker compose file]
 
    Cpoy the ansible.cfg file to the location /var/lib/docker/volumes/jenkins-jenkins-data/_data
                            or
@@ -41,3 +43,8 @@
       1. go to jenkins home location :  cd $HOME or cd
       2. ansible test --list-hosts   ------>   these command should show list of valaible host (remote_host in oure case)
       3. ansible -m ping
+5. [Connecting to DB Server]
+   1. docker exec -it db_server bash
+   2. fire up db screen/IDLE : /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "<enter the password>"
+       ( ref link for sqlcmd command :  https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver15&pivots=cs1-bash
+                     https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-setup-tools?view=sql-server-ver15  )
