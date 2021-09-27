@@ -33,4 +33,4 @@
       shell: |
         packer build -var='aws_acces_key={{aws_access_key}}' -var='aws_secret_key={{aws_secret_key}}' apache_ami.json
       args:
-        chdir: /var/jenkins_home/ami_build_code
+        chdir: /home/remote_user/ami_build_code
