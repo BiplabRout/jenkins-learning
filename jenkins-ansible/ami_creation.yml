@@ -1,0 +1,36 @@
+---
+- name: ami build in remote_host
+  hosts: test
+  vars:
+    aws_access_key: ""
+    aws_secret_key: ""
+  tasks:
+    - name: create folder 
+      file:
+        path: /var/jenkins_home/ami_build_code
+        state: directory
+        recurse: yes
+        owner: jenkins
+        group: jenkins
+        mode: '0755'
+    - name: check if ami build code is clonned or not
+      git:
+        repo: https://github.com/BiplabRout/packer-ansible-terraform.git
+        dest: /var/jenkins_home/ami_build_code
+#       update ==> check if lates commit is present or not.
+#       clone ==> setting the paramete whether to clone or not and we are saying no.
+        update: yes
+        clone: no
+      register: gitstatus
+
+    - name: clone ami build code if it is not cloned earlier
+      git:
+        repo: https://github.com/BiplabRout/packer-ansible-terraform.git
+        dest: /var/jenkins_home/ami_build_code
+      when: gitstatus.before is none
+
+    - name: run the amibuild
+      shell: |
+        packer build -var='aws_acces_key={{aws_access_key}}' -var='aws_secret_key={{aws_secret_key}}'
+      args:
+        chdir: /var/jenkins_home/ami_build_code

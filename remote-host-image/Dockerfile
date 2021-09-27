@@ -2,8 +2,9 @@ FROM centos
 
 RUN yum -y install openssh-server && \
     yum -y install yum-utils && \
-	yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo && \
-	yum -y install packer
+    yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo && \
+    yum -y install packer && \
+    yum -y install git
 
 RUN useradd remote_user && \
     echo "remote_user:1234" | chpasswd && \
