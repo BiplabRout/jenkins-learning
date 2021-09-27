@@ -1,6 +1,9 @@
 FROM centos
 
-RUN yum -y install openssh-server
+RUN yum -y install openssh-server && \
+    yum -y install yum-utils && \
+	yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo && \
+	yum -y install packer
 
 RUN useradd remote_user && \
     echo "remote_user:1234" | chpasswd && \
@@ -13,6 +16,6 @@ RUN chown remote_user:remote_user -R /home/remote_user/.ssh && \
     chmod 600 /home/remote_user/.ssh/authorized_keys
 
 RUN ssh-keygen -A
-
+ 
 
 CMD /usr/sbin/sshd -D
