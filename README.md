@@ -48,3 +48,8 @@
    2. fire up db screen/IDLE : /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "<enter the password>"
        ( ref link for sqlcmd command :  https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver15&pivots=cs1-bash
                      https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-setup-tools?view=sql-server-ver15  )
+      
+# packer installation in amazon linux:
+      wget https://releases.hashicorp.com/packer/1.5.4/packer_1.5.4_linux_amd64.zip
+      unzip packer_1.5.4_linux_amd64.zip
+      sudo mv packer /usr/local/bin/.
