@@ -22,7 +22,7 @@
       git:
         repo: https://github.com/BiplabRout/packer-ansible-terraform.git
         dest: /home/remote_user/ami_build_code
-       when: gitstatus.before is none
+      when: gitstatus.before is none
 
     - name: download aws terraform provider
       shell: |
@@ -32,6 +32,6 @@
 
     - name: build infra
       shell: |
-        terraform apply -var='access_key_req=$({{access_key_req}})' -var='access_key_req=$({{secret_key_req}})'
+        terraform apply -var='access_key_req={{access_key_req}}' -var='secret_key_req={{secret_key_req}}' -auto-approve
       args:
         chdir: /home/remote_user/ami_build_code

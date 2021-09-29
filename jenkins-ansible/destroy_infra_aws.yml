@@ -1,0 +1,12 @@
+---
+- name: destroy infra
+  hosts: test
+  vars:
+    access_key_req: ""
+    secret_key_req: ""
+  tasks:
+    - name: destroy application
+      shell: |
+        terraform destroy -var='access_key_req={{access_key_req}}' -var='secret_key_req={{secret_key_req}}' -auto-approve
+      args:
+        chdir: /home/remote_user/ami_build_code
