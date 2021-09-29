@@ -1,0 +1,37 @@
+---
+- name: build infra for aws
+  hosts: test
+  vars:
+    access_key_req: ""
+    secret_key_req: ""
+  tasks:
+    - name: create working directory
+      file:
+        path: /home/remote_user/ami_build_code
+        state: directory 
+
+    - name: repo clone checking
+      git:
+        repo: https://github.com/BiplabRout/packer-ansible-terraform.git
+        dest: /home/remote_user/ami_build_code
+        update: yes
+        clone: no
+      register: gitstatus
+
+    - name: clone if repo is not already cloned
+      git:
+        repo: https://github.com/BiplabRout/packer-ansible-terraform.git
+        dest: /home/remote_user/ami_build_code
+       when: gitstatus.before is none
+
+    - name: download aws terraform provider
+      shell: |
+        terraform init
+      args:
+        chdir: /home/remote_user/ami_build_code
+
+    - name: build infra
+      shell: |
+        terraform apply -var='access_key_req=$({{access_key_req}})' -var='access_key_req=$({{secret_key_req}})'
+      args:
+        chdir: /home/remote_user/ami_build_code
