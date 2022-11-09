@@ -6,3 +6,4 @@ node {
 		sh (script: "echo ${swapDate} > swapDate.txt")
     }
 }
+}
